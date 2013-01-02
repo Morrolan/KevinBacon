@@ -20,250 +20,97 @@
 #
 #############################################################################
 
-#   NOTE:  Requires IMDbPY - imdbpy.sourceforge.net
+#   NOTE:  Requires IMDbPY 5.0 or greater - imdbpy.sourceforge.net
 
 #############################################################################
 
 import sys
 import imdb
-from kevinbacon_data import kbd
 
 #############################################################################
 
 ia = imdb.IMDb()
 
 #############################################################################
-# RE-USABLE GET FUNCTIONS TO RETURN BITS OF DATA
+# SINGLE USE FUNCTIONS - EACH SHOULD ONLY RUN ONCE FOR EACH ATTEMPTED SOLUTION
 #############################################################################
+ 
+def __init__(self):
+    self.kbd = {
+                principle_a_cli_argument: None,
+                principle_a_person_object: None,
+                principle_b_cli_argument: None,
+                principle_b_person_object: None,
+        
+                max_recursion_limit: 0,
+                matching_films: 0,
+                current_level: 0,
+                current_actor: None,
+                current_movie: None,
+
+                principle_a_movie_list: [],
+                principle_b_movie_list: [],
+                current_sorted_movie_list: [],
+                current_sorted_actors_list: [],
+                matching_list: [],
+
+                film_level1: None,
+                film_level2: None,
+                film_level3: None,
+                film_level4: None,
+                film_level5: None,
+                film_level6: None,
+
+                actor_level1: None,
+                actor_level2: None,
+                actor_level3: None,
+                actor_level4: None,
+                actor_level5: None,
+                actor_level6: None
+                }
 
 def get_sys_argv():
     if len(sys.argv) != 4:
         print len(sys.argv)
         print 'Incorrect number of parameters specified - precisely 3 are ' \
               'required - Principle A, Principle B, and Max number of levels' \
-              'to drill down.'
+              'to search.'
     kbd.principle_a_argument = sys.argv[1]
     kbd.principle_b_argument = sys.argv[2]
-    kbd.max_limit = sys.argv[3]
-
-def get_actor(actor_search):
-    _actor_search_res = ia.search_person(actor_search)
-    _actor_personid = _actor_search_res[0].personID
-    person_object = ia.get_person(str(_actor_personid))
-    return person_object
-
-def get_principles():
-    kbd.principle_a_person_object = get_actor(kbd.principle_a_argument)
-    kbd.principle_b_person_object = get_actor(kbd.principle_b_argument)
+    kbd.max_limit = sys.argv[3] 
     
-def get_filmography(person_object):
-        try:
-            if len(person_object['actor']) != 0:
-                person_filmography = person_object['actor']
-        except KeyError:
-            if len(person_object['actress']) != 0:
-                person_filmography = person_object['actress']
-        return person_filmography
-    
-#############################################################################
-# END OF RE-USABLE GET FUNCTIONS TO RETURN BITS OF DATA
-#############################################################################
-
-
-
-
-#############################################################################
-# SINGLE-USE SCRIPTED BITS AND MAIN LOGIC FLOW
-#############################################################################
-
 def intro():
     print ''
     print 'KEVIN BACON SOLVER - Morrolan 2013'
     print ''
     print kbd.principle_a_argument , '>>', kbd.principle_b_argument
-    #print 'Going a maximum of', str(max_limit), 'films deep.'
+    print 'Searching a maximum of', str(max_limit), 'films deep.'
     print ''
-    pass
-
-def principle_filmography():
-   
-    _principle_a_filmography = get_filmography(kbd.principle_a_person_object)
-    _principle_b_filmography = get_filmography(kbd.principle_b_person_object)
-        
-    print ''
-    if len(_principle_a_filmography) == 1:
-        print (kbd.principle_a_argument, 'has starred in', 
-               len(_principle_a_filmography), 'film.')
-    elif len(_principle_a_filmography) > 1:
-        print (kbd.principle_a_argument, 'has starred in', 
-               len(_principle_a_filmography), 'films.')
-    print '---------------------------------------'
-    
-    for item in _principle_a_filmography:
-        ia.update(item)
-        cast_num = len(item['cast'])
-        tuple_a = (item['long imdb canonical title'], item.movieID, cast_num)
-        kbd.principle_a_movie_list.append(tuple_a)
-        
-        print item['long imdb canonical title'], '\t\t Cast:', cast_num
-        #print (item['long imdb canonical title'], '\t IMDb MovieID:', 
-                #item.movieID, '\t Cast:', cast_num)
-     
-    print ''
-    if len(_principle_b_filmography) == 1:
-        print (kbd.principle_b_argument, 'has starred in', 
-               len(_principle_b_filmography), 'film.')
-    elif len(_principle_b_filmography) > 1:
-        print (kbd.principle_b_argument, 'has starred in', 
-               len(_principle_a_filmography), 'films.')
-    print '---------------------------------------'
-    
-    for item in _principle_b_filmography:
-        ia.update(item)
-        cast_num = len(item['cast'])
-        tuple_b = (item['long imdb canonical title'], item.movieID, cast_num)
-        kbd.principle_b_movie_list.append(tuple_b)
-                
-        print (item['long imdb canonical title'], '\t\t IMDb MovieID:', 
-               '\t Cast:', cast_num)
-        #print (item['long imdb canonical title'], '\t IMDb MovieID:', 
-                #item.movieID, '\t Cast:', cast_num)
-
-def check_for_matches(list_to_match):
-    if len(list_to_match) > 0:
-        kbd.match = kbd.match + 1
-    elif len(list_to_match) <= 0:
-        
-        ########################################################################
-        ### THIS IS THE CRITICAL POINT!!!
-        ########################################################################
-        
-        return
-        
-        """
-        print ''
-        print '---------------------------------------'
-        # python 3 way of doing things:
-        #print ('{!s} and {!s} have never appeared in a film together.'
-                #.format(kbd.principle_a_argument, kbd.principle_b_argument))
-        
-        #python 2 way of doing things:
-        print ('%s and %s have never appeared in a film together.' 
-               % (kbd.principle_a_argument, kbd.principle_b_argument))
-        
-        print ''
-        """
-        
-    
-    if kbd.match > 0:
-        found_match(list_to_match)
-    else:
-        return
-
-def search_start():
-    
-    # LEVEL 1
-    kbd.current_level = 1
-    set_a = set(kbd.principle_a_movie_list)
-    
-    kbd.matching_list = kbd.principle_b_movie_list
-    
-    kbd.matching = set_a.intersection(kbd.matching_list)
-    check_for_matches(kbd.matching)
-    
-    # LEVEL 2
-    kbd.current_level = 2
-    set_a = set(kbd.principle_a_movie_list)
-    
-    kbd.matching_list = # SELECT 1ST/NEXT MOVIE IN 
-    
-    kbd.matching = set_a.intersection(kbd.principle_b_movie_list)
-    check_for_matches(kbd.matching)
-
-def found_match(list_to_match):
-    
-    print ''
-    print ''
-    print 'MATCH FOUND:'
-    
-    for entry in list_to_match:
-        kbd.matching_list.append(entry)
     
     
-    # THIS NEXT LINE TO BE REMOVED AND CHANGED WHEN WE MOVE TO MULTIPLE LEVELS    
-    film = kbd.matching_list[0]
     
-    if kbd.current_level ==1:
-        kbd.film_level1 = film[0]
-    elif kbd.current_level ==2:
-        kbd.film_level2 = film[0]
-    elif kbd.current_level ==3:
-        kbd.film_level3 = film[0]
-    elif kbd.current_level ==4:
-        kbd.film_level4 = film[0]  
-    elif kbd.current_level ==5:
-        kbd.film_level5 = film[0]  
-    elif kbd.current_level ==6:
-        kbd.film_level6 = film[0]
-    
-        
-    if len(list_to_match) > 0:
-        
-        if kbd.current_level == 1:
-            print_degree(kbd.principle_a_person_object, kbd.principle_b_person_object, kbd.film_level1)
-        elif kbd.current_level == 2:
-            print_degree(kbd.principle_a_person_object, kbd.actor_level1, kbd.film_level1)
-            print_degree(kbd.actor_level1, kbd.principle_b_person_object, kbd.film_level2)
-        elif kbd.current_level == 3:
-            print_degree(kbd.principle_a_person_object, kbd.actor_level1, kbd.film_level1)
-            print_degree(kbd.actor_level1, kbd.actor_level2, kbd.film_level2)
-            print_degree(kbd.actor_level2, kbd.principle_b_person_object, kbd.film_level3)
-        elif kbd.current_level == 4:
-            print_degree(kbd.principle_a_person_object, kbd.actor_level1, kbd.film_level1)
-            print_degree(kbd.actor_level1, kbd.actor_level2, kbd.film_level2)
-            print_degree(kbd.actor_level2, kbd.actor_level3, kbd.film_level3)
-            print_degree(kbd.actor_level3, kbd.principle_b_person_object, kbd.film_level4)
-        elif kbd.current_level == 5:
-            print_degree(kbd.principle_a_person_object, kbd.actor_level1, kbd.film_level1)
-            print_degree(kbd.actor_level1, kbd.actor_level2, kbd.film_level2)
-            print_degree(kbd.actor_level2, kbd.actor_level3, kbd.film_level3)
-            print_degree(kbd.actor_level3, kbd.actor_level4, kbd.film_level4)
-            print_degree(kbd.actor_level4, kbd.principle_b_person_object, kbd.film_level5)
-        elif kbd.current_level == 6:
-            print_degree(kbd.principle_a_person_object, kbd.actor_level1, kbd.film_level1)
-            print_degree(kbd.actor_level1, kbd.actor_level2, kbd.film_level2)
-            print_degree(kbd.actor_level2, kbd.actor_level3, kbd.film_level3)
-            print_degree(kbd.actor_level3, kbd.actor_level4, kbd.film_level4)
-            print_degree(kbd.actor_level4, kbd.actor_level5, kbd.film_level5)
-            print_degree(kbd.actor_level5, kbd.principle_b_person_object, kbd.film_level6)
-    print ''    
- 
-def print_degree(actor_1, actor_2, film):  
-    print actor_1, '&', actor_2, '-', film
     
 #############################################################################
+# RE-USABLE GET FUNCTIONS TO RETURN BITS OF DATA
 #############################################################################
-#############################################################################  
-    
-def debug():
-    print '********************* DEBUG *********************'
-    print ''
-    tuple_test = sorted(kbd.principle_a_movie_list, key=lambda noofcast: noofcast[2], reverse=True) 
-    for ele in tuple_test:
-        print ele
-    
+
+def fetch_actor_object(actor_to_search):
+    _actor_search_result = ia.search_person(actor_to_search)
+    _actor_personid = _actor_search_result[0].personID
+    person_object = ia.get_person(str(_actor_personid))
+    return person_object
+
 #############################################################################
+# SINGLE-USE SCRIPTED BITS AND MAIN LOGIC FLOW
 #############################################################################
-#############################################################################     
 
 def main():
     
     get_sys_argv()
     intro()
-    get_principles()
-    principle_filmography()
-    search_start()
-    #debug()
+    #get_principles()
+    #get_principle_filmography()
+    #search_start()
 
 
 #############################################################################
