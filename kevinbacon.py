@@ -80,7 +80,7 @@ def get_filmography(person_object):
 
 def intro():
     print ''
-    print 'KEVIN BACON SOLVER - Morrolan 2012'
+    print 'KEVIN BACON SOLVER - Morrolan 2013'
     print ''
     print kbd.principle_a_argument , '>>', kbd.principle_b_argument
     #print 'Going a maximum of', str(max_limit), 'films deep.'
@@ -94,7 +94,10 @@ def principle_filmography():
     _principle_b_filmography = get_filmography(kbd.principle_b_person_object)
         
     print ''
-    print kbd.principle_a_argument, 'has starred in', len(_principle_a_filmography), 'films.'
+    if len(_principle_a_filmography) == 1:
+        print kbd.principle_a_argument, 'has starred in', len(_principle_a_filmography), 'film.'
+    elif len(_principle_a_filmography) > 1:
+        print kbd.principle_a_argument, 'has starred in', len(_principle_a_filmography), 'films.'
     print '---------------------------------------'
     
     for item in _principle_a_filmography:
@@ -103,11 +106,14 @@ def principle_filmography():
         tuple_a = (item['long imdb canonical title'], item.movieID, cast_num)
         kbd.principle_a_movie_list.append(tuple_a)
         
-        print item['long imdb canonical title'], ', IMDb MovieID:', item.movieID, ', Cast:', cast_num
+        print item['long imdb canonical title'], '\t IMDb MovieID:', item.movieID, '\t Cast:', cast_num
     
     
     print ''
-    print kbd.principle_b_argument, 'has starred in', len(_principle_b_filmography), 'films.'
+    if len(_principle_b_filmography) == 1:
+        print kbd.principle_b_argument, 'has starred in', len(_principle_b_filmography), 'film.'
+    elif len(_principle_b_filmography) > 1:
+        print kbd.principle_b_argument, 'has starred in', len(_principle_a_filmography), 'films.'
     print '---------------------------------------'
     
     for item in _principle_b_filmography:
@@ -116,7 +122,7 @@ def principle_filmography():
         tuple_b = (item['long imdb canonical title'], item.movieID, cast_num)
         kbd.principle_b_movie_list.append(tuple_b)
                 
-        print item['long imdb canonical title'], ', IMDb MovieID:', item.movieID, ', Cast:', cast_num
+        print item['long imdb canonical title'], '\t IMDb MovieID:', item.movieID, '\t Cast:', cast_num
 
 
 def check_for_matches(list_to_match):
@@ -145,6 +151,19 @@ def found_match(list_to_match):
     
     # THIS NEXT LINE NEEDS TO BE REMOVED AND CHANGED WHEN WE MOVE TO MULTIPLE LEVELS    
     film = kbd.matching_list[0]
+    
+    if kbd.current_level ==1:
+        kbd.film_level1 = film[0]
+    elif kbd.current_level ==2:
+        kbd.film_level2 = film[0]
+    elif kbd.current_level ==3:
+        kbd.film_level3 = film[0]
+    elif kbd.current_level ==4:
+        kbd.film_level4 = film[0]  
+    elif kbd.current_level ==5:
+        kbd.film_level5 = film[0]  
+    elif kbd.current_level ==6:
+        kbd.film_level6 = film[0]
     
         
     if len(list_to_match) > 0:
@@ -177,9 +196,22 @@ def found_match(list_to_match):
             print_degree(kbd.actor_level4, kbd.actor_level5, kbd.film_level5)
             print_degree(kbd.actor_level5, kbd.principle_b_person_object, kbd.film_level6)
     print ''    
+ 
+
+def print_degree(actor_1, actor_2, film):  
+    print actor_1, '&', actor_2, '-', film
+    
+#############################################################################
+#############################################################################
+#############################################################################  
     
     
-    
+def debug():
+    print '********************* DEBUG *********************'
+    print ''
+    tuple_test = sorted(kbd.principle_a_movie_list, key=lambda noofcast: noofcast[2], reverse=True) 
+    for ele in tuple_test:
+        print ele
     
     
 #############################################################################
@@ -194,14 +226,17 @@ def search_start():
     kbd.matching = set_a.intersection(kbd.principle_b_movie_list)
     check_for_matches(kbd.matching)
     
+    # LEVEL 2
+    kbd.current_level = 2
+    set_a = set(kbd.principle_a_movie_list)
+    
     
 #############################################################################
 #############################################################################
 #############################################################################    
 
 
-def print_degree(actor_1, actor_2, film):  
-    print actor_1, '&', actor_2, '-', film
+
 
 
 def main():
@@ -211,6 +246,7 @@ def main():
     get_principles()
     principle_filmography()
     search_start()
+    #debug()
 
 
 #############################################################################
