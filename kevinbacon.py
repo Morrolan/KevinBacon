@@ -98,12 +98,12 @@ def principle_filmography():
     print '---------------------------------------'
     
     for item in _principle_a_filmography:
-        #ia.update(item)
-        #cast_num = len(item['cast'])
-        tuple_a = (item['long imdb canonical title'], item.movieID)#, cast_num)
+        ia.update(item)
+        cast_num = len(item['cast'])
+        tuple_a = (item['long imdb canonical title'], item.movieID, cast_num)
         kbd.principle_a_movie_list.append(tuple_a)
         
-        print item['long imdb canonical title']#, ', IMDb MovieID:', item.movieID#, ', Cast:', cast_num
+        print item['long imdb canonical title'], ', IMDb MovieID:', item.movieID, ', Cast:', cast_num
     
     
     print ''
@@ -111,12 +111,12 @@ def principle_filmography():
     print '---------------------------------------'
     
     for item in _principle_b_filmography:
-        #ia.update(item)
-        #cast_num = len(item['cast'])
-        tuple_b = (item['long imdb canonical title'], item.movieID)#, cast_num)
+        ia.update(item)
+        cast_num = len(item['cast'])
+        tuple_b = (item['long imdb canonical title'], item.movieID, cast_num)
         kbd.principle_b_movie_list.append(tuple_b)
                 
-        print item['long imdb canonical title']#, ', IMDb MovieID:', item.movieID#, ', Cast:', cast_num
+        print item['long imdb canonical title'], ', IMDb MovieID:', item.movieID, ', Cast:', cast_num
 
 
 def check_for_matches(list_to_match):
