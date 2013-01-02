@@ -106,9 +106,9 @@ def principle_filmography():
         tuple_a = (item['long imdb canonical title'], item.movieID, cast_num)
         kbd.principle_a_movie_list.append(tuple_a)
         
-        print item['long imdb canonical title'], '\t IMDb MovieID:', item.movieID, '\t Cast:', cast_num
-    
-    
+        print item['long imdb canonical title'], '\t\t Cast:', cast_num
+        #print item['long imdb canonical title'], '\t IMDb MovieID:', item.movieID, '\t Cast:', cast_num
+     
     print ''
     if len(_principle_b_filmography) == 1:
         print kbd.principle_b_argument, 'has starred in', len(_principle_b_filmography), 'film.'
@@ -122,16 +122,23 @@ def principle_filmography():
         tuple_b = (item['long imdb canonical title'], item.movieID, cast_num)
         kbd.principle_b_movie_list.append(tuple_b)
                 
-        print item['long imdb canonical title'], '\t IMDb MovieID:', item.movieID, '\t Cast:', cast_num
+        print item['long imdb canonical title'], '\t\t IMDb MovieID:', '\t Cast:', cast_num
+        #print item['long imdb canonical title'], '\t IMDb MovieID:', item.movieID, '\t Cast:', cast_num
 
 
 def check_for_matches(list_to_match):
     if len(list_to_match) > 0:
         kbd.match = kbd.match + 1
-    #elif len(list_to_match) <= 0:
-    #    print '---------------------------------------'
-    #    print '{!s} and {!s} have never appeared in a film together.'.format(kbd.principle_a_argument, kbd.principle_b_argument)
-    #    print ''
+    elif len(list_to_match) <= 0:
+        print ''
+        print '---------------------------------------'
+        # python 3 way of doing things:
+        #print '{!s} and {!s} have never appeared in a film together.'.format(kbd.principle_a_argument, kbd.principle_b_argument)
+        
+        #python 2 way of doing things:
+        print '%s and %s have never appeared in a film together.' % (kbd.principle_a_argument, kbd.principle_b_argument)
+        
+        print ''
     
     if kbd.match > 0:
         found_match(list_to_match)

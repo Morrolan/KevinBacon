@@ -6,7 +6,8 @@ KevinBacon
 About
 -----
 
-This is a small project designed to solve the old 'Kevin Bacon' game.
+This is a small project designed to solve the old 'Kevin Bacon' game the old-fashioned way - it doesn't rely on a local SQL database dump from IMDb, it uses pure web queries.
+It is also designed to attempt to process it film at a time - no parallel processing, just old fashioned 'line at a time' output.  Looks great when you set it going in a terminal :)
 
 
 The Game
