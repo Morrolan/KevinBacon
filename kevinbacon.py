@@ -50,8 +50,7 @@ def __init__(self):
 
                 principle_a_movie_list: [],
                 principle_b_movie_list: [],
-                current_sorted_movie_list: [],
-                current_sorted_actors_list: [],
+                current_actors_sorted_movie_list: [],
                 matching_list: [],
 
                 film_level1: None,
@@ -87,9 +86,6 @@ def intro():
     print 'Searching a maximum of', str(max_limit), 'films deep.'
     print ''
     
-    
-    
-    
 #############################################################################
 # RE-USABLE GET FUNCTIONS TO RETURN BITS OF DATA
 #############################################################################
@@ -111,7 +107,6 @@ def main():
     #get_principles()
     #get_principle_filmography()
     #search_start()
-
 
 #############################################################################
 
