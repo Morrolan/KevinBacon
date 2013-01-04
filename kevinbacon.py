@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-#############################################################################
+################################################################################
 #    KevinBacon.py - an attempt to solve the kevin bacon game in Python
 #    Copyright (C) 2012  Ian Havelock
 #
@@ -18,22 +18,22 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#############################################################################
+################################################################################
 
 #   NOTE:  Requires IMDbPY 5.0 or greater - imdbpy.sourceforge.net
 
-#############################################################################
+################################################################################
 
 import sys
 import imdb
 
-#############################################################################
+################################################################################
 
 ia = imdb.IMDb()
 
-#############################################################################
+################################################################################
 # SINGLE USE FUNCTIONS - EACH SHOULD ONLY RUN ONCE FOR EACH ATTEMPTED SOLUTION
-#############################################################################
+################################################################################
  
 def __init__(self):
     self.kbd = {
@@ -53,19 +53,19 @@ def __init__(self):
                 current_actors_sorted_movie_list: [],
                 matching_list: [],
 
-                film_level1: None,
-                film_level2: None,
-                film_level3: None,
-                film_level4: None,
-                film_level5: None,
-                film_level6: None,
+                film_lvl1: None,
+                film_lvlv2: None,
+                film_lvl3: None,
+                film_lvl4: None,
+                film_lvl5: None,
+                film_lvl6: None,
 
-                actor_level1: None,
-                actor_level2: None,
-                actor_level3: None,
-                actor_level4: None,
-                actor_level5: None,
-                actor_level6: None
+                actor_lvl1: None,
+                actor_lvl2: None,
+                actor_lvl3: None,
+                actor_lvl4: None,
+                actor_lvl5: None,
+                actor_lvl6: None
                 }
 
 def get_sys_argv():
@@ -86,19 +86,19 @@ def intro():
     print 'Searching a maximum of', str(max_limit), 'films deep.'
     print ''
     
-#############################################################################
+################################################################################
 # RE-USABLE GET FUNCTIONS TO RETURN BITS OF DATA
-#############################################################################
+################################################################################
 
 def fetch_actor_object(actor_to_search):
-    _actor_search_result = ia.search_person(actor_to_search)
-    _actor_personid = _actor_search_result[0].personID
+    _result = ia.search_person(actor_to_search)
+    _actor_personid = _result[0].personID
     person_object = ia.get_person(str(_actor_personid))
     return person_object
 
-#############################################################################
+################################################################################
 # SINGLE-USE SCRIPTED BITS AND MAIN LOGIC FLOW
-#############################################################################
+################################################################################
 
 def main():
     
@@ -108,7 +108,7 @@ def main():
     #get_principle_filmography()
     #search_start()
 
-#############################################################################
+################################################################################
 
 if __name__ == "__main__":
     main()

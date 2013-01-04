@@ -175,7 +175,7 @@ def search_start():
     kbd.current_level = 2
     set_a = set(kbd.principle_a_movie_list)
     
-    kbd.matching_list = # SELECT 1ST/NEXT MOVIE IN 
+    #kbd.matching_list = # SELECT 1ST/NEXT MOVIE IN 
     
     kbd.matching = set_a.intersection(kbd.principle_b_movie_list)
     check_for_matches(kbd.matching)
