@@ -92,11 +92,9 @@ def principle_filmography():
         
     print ''
     if len(_principle_a_filmography) == 1:
-        print (kbd.principle_a_argument, 'has starred in', 
-               len(_principle_a_filmography), 'film.')
+        print kbd.principle_a_argument, 'has starred in', len(_principle_a_filmography), 'film.'
     elif len(_principle_a_filmography) > 1:
-        print (kbd.principle_a_argument, 'has starred in', 
-               len(_principle_a_filmography), 'films.')
+        print kbd.principle_a_argument, 'has starred in', len(_principle_a_filmography), 'films.'
     print '---------------------------------------'
     
     for item in _principle_a_filmography:
@@ -105,17 +103,18 @@ def principle_filmography():
         tuple_a = (item['long imdb canonical title'], item.movieID, cast_num)
         kbd.principle_a_movie_list.append(tuple_a)
         
-        print item['long imdb canonical title'], '\t\t Cast:', cast_num
+        if len(item['long imdb canonical title']) < 30:
+            print item['long imdb canonical title'], '\t\t Cast:', cast_num
+        elif len(item['long imdb canonical title']) > 30:
+            print item['long imdb canonical title'], '\t Cast:', cast_num
         #print (item['long imdb canonical title'], '\t IMDb MovieID:', 
                 #item.movieID, '\t Cast:', cast_num)
      
     print ''
     if len(_principle_b_filmography) == 1:
-        print (kbd.principle_b_argument, 'has starred in', 
-               len(_principle_b_filmography), 'film.')
+        print kbd.principle_b_argument, 'has starred in', len(_principle_b_filmography), 'film.'
     elif len(_principle_b_filmography) > 1:
-        print (kbd.principle_b_argument, 'has starred in', 
-               len(_principle_a_filmography), 'films.')
+        print kbd.principle_b_argument, 'has starred in', len(_principle_b_filmography), 'films.'
     print '---------------------------------------'
     
     for item in _principle_b_filmography:
@@ -124,8 +123,10 @@ def principle_filmography():
         tuple_b = (item['long imdb canonical title'], item.movieID, cast_num)
         kbd.principle_b_movie_list.append(tuple_b)
                 
-        print (item['long imdb canonical title'], '\t\t IMDb MovieID:', 
-               '\t Cast:', cast_num)
+        if len(item['long imdb canonical title']) < 30:
+            print item['long imdb canonical title'], '\t\t Cast:', cast_num
+        elif len(item['long imdb canonical title']) > 30:
+            print item['long imdb canonical title'], '\t Cast:', cast_num
         #print (item['long imdb canonical title'], '\t IMDb MovieID:', 
                 #item.movieID, '\t Cast:', cast_num)
 
@@ -184,7 +185,7 @@ def found_match(list_to_match):
     
     print ''
     print ''
-    print 'MATCH FOUND:'
+    print 'MATCH FOUND:', kbd.matching_list
     
     for entry in list_to_match:
         kbd.matching_list.append(entry)
@@ -195,16 +196,16 @@ def found_match(list_to_match):
     
     if kbd.current_level ==1:
         kbd.film_level1 = film[0]
-    elif kbd.current_level ==2:
-        kbd.film_level2 = film[0]
-    elif kbd.current_level ==3:
-        kbd.film_level3 = film[0]
-    elif kbd.current_level ==4:
-        kbd.film_level4 = film[0]  
-    elif kbd.current_level ==5:
-        kbd.film_level5 = film[0]  
-    elif kbd.current_level ==6:
-        kbd.film_level6 = film[0]
+    #elif kbd.current_level ==2:
+    #    kbd.film_level2 = film[0]
+    #elif kbd.current_level ==3:
+    #    kbd.film_level3 = film[0]
+    #elif kbd.current_level ==4:
+    #    kbd.film_level4 = film[0]  
+    #elif kbd.current_level ==5:
+    #    kbd.film_level5 = film[0]  
+    #elif kbd.current_level ==6:
+    #    kbd.film_level6 = film[0]
     
         
     if len(list_to_match) > 0:
