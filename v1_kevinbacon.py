@@ -103,6 +103,8 @@ def principle_filmography():
         tuple_a = (item['long imdb canonical title'], item.movieID, cast_num)
         kbd.principle_a_movie_list.append(tuple_a)
         
+
+        
         if len(item['long imdb canonical title']) < 30:
             print item['long imdb canonical title'], '\t\t Cast:', cast_num
         elif len(item['long imdb canonical title']) > 30:
@@ -263,6 +265,9 @@ def main():
     intro()
     get_principles()
     principle_filmography()
+    print '###################################'
+    print kbd.principle_a_movie_list
+    print '###################################'
     search_start()
     #debug()
 
