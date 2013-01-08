@@ -19,6 +19,6 @@ One solution would be:
 ```
 Angelina Jolie & Brad Pitt - Mr & Mrs Smith
 Brad Pitt & Christian Slater - Interview with a Vampire
-Christian Slater & Brad Pitt - Robin Hood: Prince of Thieves
+Christian Slater & Kevin Costner - Robin Hood: Prince of Thieves
 ```
 That would give you a score of **3**, or you have done it in 3 links. Normally the game is limited to 6 links, but that is down to personal choice - sometimes it is easier to allow more links when you first start playing the game.
