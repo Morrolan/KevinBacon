@@ -35,38 +35,38 @@ ia = imdb.IMDb()
 # SINGLE USE FUNCTIONS - EACH SHOULD ONLY RUN ONCE FOR EACH ATTEMPTED SOLUTION
 ################################################################################
  
-def __init__(self):
-    self.kbd = {
-                principle_a_cli_argument: None,
-                principle_a_person_object: None,
-                principle_b_cli_argument: None,
-                principle_b_person_object: None,
+#def __init__(self):
+kbd = {
+        'principle_a_cli_argument': None,
+        'principle_a_person_object': None,
+        'principle_b_cli_argument' : None,
+        'principle_b_person_object' : None,
         
-                max_recursion_limit: 0,
-                matching_films: 0,
-                current_level: 0,
-                current_actor: None,
-                current_movie: None,
+        'max_recursion_limit' : None,
+        'matching_films' : None,
+        'current_level' : None,
+        'current_actor' : None,
+        'current_movie' : None,
 
-                principle_a_movie_list: [],
-                principle_b_movie_list: [],
-                current_actors_sorted_movie_list: [],
-                matching_list: [],
+        'principle_a_movie_list' : [],
+        'principle_b_movie_list' : [],
+        'current_actors_sorted_movie_list' : [],
+        'matching_list' : [],
 
-                film_lvl1: None,
-                film_lvlv2: None,
-                film_lvl3: None,
-                film_lvl4: None,
-                film_lvl5: None,
-                film_lvl6: None,
+        'film_lvl1' : None,
+        'film_lvl2' : None,
+        'film_lvl3' : None,
+        'film_lvl4' : None,
+        'film_lvl5' : None,
+        'film_lvl6' : None,
 
-                actor_lvl1: None,
-                actor_lvl2: None,
-                actor_lvl3: None,
-                actor_lvl4: None,
-                actor_lvl5: None,
-                actor_lvl6: None
-                }
+        'actor_lvl1' : None,
+        'actor_lvl2' : None,
+        'actor_lvl3' : None,
+        'actor_lvl4' : None,
+        'actor_lvl5' : None,
+        'actor_lvl6' : None
+        }
 
 def get_sys_argv():
     if len(sys.argv) != 4:
@@ -74,9 +74,9 @@ def get_sys_argv():
         print 'Incorrect number of parameters specified - precisely 3 are ' \
               'required - Principle A, Principle B, and Max number of levels' \
               'to search.'
-    kbd.principle_a_argument = sys.argv[1]
-    kbd.principle_b_argument = sys.argv[2]
-    kbd.max_limit = sys.argv[3] 
+    kbd['principle_a_argument'] = sys.argv[1]
+    kbd['principle_b_argument'] = sys.argv[2]
+    kbd['max_limit'] = sys.argv[3]
     
 def intro():
     print ''
@@ -90,11 +90,49 @@ def intro():
 # RE-USABLE GET FUNCTIONS TO RETURN BITS OF DATA
 ################################################################################
 
+# What do we pass in to the function?  The actor name or OBJECT?
 def fetch_actor_object(actor_to_search):
     _result = ia.search_person(actor_to_search)
     _actor_personid = _result[0].personID
     person_object = ia.get_person(str(_actor_personid))
     return person_object
+    
+# Here we pass in the OBJECT of the person, to return their filmography
+def get_filmography(person_object):
+        try:
+            if len(person_object['actor']) != 0:
+                person_filmography = person_object['actor']
+        except KeyError:
+            if len(person_object['actress']) != 0:
+                person_filmography = person_object['actress']
+        return person_filmography
+    
+# INCOMPLETE
+def get_principles():
+    pass
+    
+# WORK IN PROGRESS
+def dive_1_level(_x):
+    pass
+#Given a single actor (X):
+#
+#    Order actors movie list by number of cast, highest first.
+#	
+#		for each movie in X's list:
+#		
+#			for each actor (Y) in this movie:
+#			
+#				Compare list of Y actors movies with B. (EXT FUNC)
+
+
+
+
+
+def debug():
+    print sorted(kbd.keys())
+    print ''
+    for x, y in kbd.items():
+        print x, ' : ', y
 
 ################################################################################
 # SINGLE-USE SCRIPTED BITS AND MAIN LOGIC FLOW
@@ -103,7 +141,8 @@ def fetch_actor_object(actor_to_search):
 def main():
     
     get_sys_argv()
-    intro()
+    debug()
+    #intro()
     #get_principles()
     #get_principle_filmography()
     #search_start()
