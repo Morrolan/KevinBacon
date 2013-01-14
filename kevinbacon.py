@@ -24,8 +24,16 @@
 
 ################################################################################
 
+# Standard Modules
 import sys
+import argparse
+
+# Third-Party Modules
 import imdb
+import logging
+
+# Particular imports
+from datetime import datetime
 
 ################################################################################
 # CONSTANTS
@@ -48,6 +56,7 @@ kbdata = {
         'current_level' : None,
         'current_actor' : None,
         'current_movie' : None,
+        'hide_cast' : None,
 
         'principle_a_movie_list' : [],
         'principle_b_movie_list' : [],
@@ -75,14 +84,28 @@ kbdata = {
 
 def get_sys_argv():
     global kbdata
-    if len(sys.argv) != 4:
-        print len(sys.argv)
-        print 'Incorrect number of parameters specified - precisely 3 are ' \
-              'required - Principle A, Principle B, and Max number of levels' \
-              'to search.'
-    kbdata['principle_a_cli_param'] = sys.argv[1]
-    kbdata['principle_b_cli_param'] = sys.argv[2]
-    kbdata['max_limit'] = sys.argv[3]
+    
+    parser = argparse.ArgumentParser()
+    parser.add_argument("principle_a", help="type the name of the 1st actor or actress here, in single quotes.")
+    parser.add_argument("principle_b", help="type the name of the 2nd actor or actress here, in single quotes.")
+    parser.add_argument("deep", help="enter the maximum number of levels you wish to dive down.", type=int)
+    parser.add_argument("-c", "--cast", help="Optional parameter to remove number of cast \(dramatically improves speed\)", action="store_true")
+    argo = parser.parse_args()
+    print argo.principle_a, ':', argo.principle_b, ':', argo.deep, ':', argo.cast
+    
+    kbdata['principle_a_cli_param'] = argo.principle_a
+    kbdata['principle_b_cli_param'] = argo.principle_b
+    kbdata['max_limit'] = argo.deep
+    kbdata['hide_cast'] = argo.cast
+    
+    #if len(sys.argv) != 4:
+    #    print len(sys.argv)
+    #    print 'Incorrect number of parameters specified - precisely 3 are ' \
+    #          'required - Principle A, Principle B, and Max number of levels' \
+    #          'to search.'
+    #kbdata['principle_a_cli_param'] = sys.argv[1]
+    #kbdata['principle_b_cli_param'] = sys.argv[2]
+    #kbdata['max_limit'] = sys.argv[3]
     
 def print_intro():
     print ''
@@ -130,6 +153,8 @@ def print_filmography(actor):
         print actor, 'has starred in', len(_filmography), 'films.'
     elif len(_filmography) == 0:
         print actor, 'hasn\'t starred in any films!'
+    elif len(_filmography) is None:
+        print actor, 'wasn\'t found.'
     print '---------------------------------------'
     
     for item in _filmography:  
@@ -144,13 +169,10 @@ def print_filmography(actor):
             print item['long imdb canonical title'], '\t Cast:', cast_num
         #print (item['long imdb canonical title'], '\t IMDb MovieID:', 
                 #item.movieID, '\t Cast:', cast_num)
- 
-
     
 # WORK IN PROGRESS
 def dive_1_level(_x):
     global kbdata
-    pass
 #Given a single actor (X):
 #
 #    Order actors movie list by number of cast, highest first.
@@ -167,14 +189,20 @@ def dive_1_level(_x):
 
 def debug():
     global kbdata
-    #print sorted(kbdata.keys())
-    #print ''
-    for x, y in kbdata.items():
-        print x, ' : ', y
     
-    print ''
+    #print kbdata['hide_cast']
+    
+    #if kbdata['hide_cast'] == True:
+    #    print 'YEAH MAN!'
+    #else:
+    #    print ''
     
     print_filmography(kbdata['principle_a_actor'])
+    print '---------------------------------------'
+    print ''
+    print_filmography(kbdata['principle_b_actor'])
+    print '---------------------------------------'
+    print ''
 
 ################################################################################
 # SINGLE-USE SCRIPTED BITS AND MAIN LOGIC FLOW
