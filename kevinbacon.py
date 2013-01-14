@@ -84,7 +84,7 @@ def get_sys_argv():
     kbdata['principle_b_cli_param'] = sys.argv[2]
     kbdata['max_limit'] = sys.argv[3]
     
-def intro():
+def print_intro():
     print ''
     print 'KEVIN BACON SOLVER - Morrolan 2013'
     print ''
@@ -96,8 +96,14 @@ def intro():
 # RE-USABLE GET FUNCTIONS TO RETURN BITS OF DATA
 ################################################################################
 
+# Here we fetch the objects for our principle actors that we need to link
+def get_principles():
+    global kbdata
+    kbdata['principle_a_actor'] = get_actor_from_string(kbdata['principle_a_cli_param'])
+    kbdata['principle_b_actor'] = get_actor_from_string(kbdata['principle_b_cli_param'])
+    
 # Pass in a STRING and return an OBJECT for the actor
-def get_actor(actor_to_find):
+def get_actor_from_string(actor_to_find):
     _result = ia.search_person(actor_to_find)
     _actor_id = _result[0].personID
     actor = ia.get_person(str(_actor_id))
@@ -113,38 +119,25 @@ def get_filmography(films_for_actor):
                 actor_filmography = films_for_actor['actress']
         return actor_filmography
 
-# bleh
+# pass in an actor OBJECT
 def print_filmography(actor):
+    global kbdata
+    _filmography = get_filmography(actor)
     
-    # ALL RUBBISH BELOW HERE THAT NEEDS RE-WRITING
-    for item in _principle_a_filmography:
+    if len(_filmography) == 1:
+        print actor, 'has starred in', len(_filmography), 'film.'
+    elif len(_filmography) > 1:
+        print actor, 'has starred in', len(_filmography), 'films.'
+    elif len(_filmography) == 0:
+        print actor, 'hasn\'t starred in any films!'
+    print '---------------------------------------'
+    
+    for item in _filmography:  
+        # NEED TO THINK OF BREAKING THIS DOWN SO THAT YOU CAN TURN OFF CAST!
         ia.update(item)
         cast_num = len(item['cast'])
         tuple_a = (item['long imdb canonical title'], item.movieID, cast_num)
-        kbd.principle_a_movie_list.append(tuple_a)
-        
-
-        
-        if len(item['long imdb canonical title']) < 30:
-            print item['long imdb canonical title'], '\t\t Cast:', cast_num
-        elif len(item['long imdb canonical title']) > 30:
-            print item['long imdb canonical title'], '\t Cast:', cast_num
-        #print (item['long imdb canonical title'], '\t IMDb MovieID:', 
-                #item.movieID, '\t Cast:', cast_num)
-     
-    print ''
-    if len(_principle_b_filmography) == 1:
-        print kbd.principle_b_argument, 'has starred in', len(_principle_b_filmography), 'film.'
-    elif len(_principle_b_filmography) > 1:
-        print kbd.principle_b_argument, 'has starred in', len(_principle_b_filmography), 'films.'
-    print '---------------------------------------'
-    
-    for item in _principle_b_filmography:
-        ia.update(item)
-        cast_num = len(item['cast'])
-        tuple_b = (item['long imdb canonical title'], item.movieID, cast_num)
-        kbd.principle_b_movie_list.append(tuple_b)
-                
+        kbdata['principle_a_movie_list'].append(tuple_a) 
         if len(item['long imdb canonical title']) < 30:
             print item['long imdb canonical title'], '\t\t Cast:', cast_num
         elif len(item['long imdb canonical title']) > 30:
@@ -152,11 +145,7 @@ def print_filmography(actor):
         #print (item['long imdb canonical title'], '\t IMDb MovieID:', 
                 #item.movieID, '\t Cast:', cast_num)
  
-# Here we fetch the objects for our principle actors that we need to link
-def get_principles():
-    global kbdata
-    kbdata['principle_a_actor'] = get_actor(kbdata['principle_a_cli_param'])
-    kbdata['principle_b_actor'] = get_actor(kbdata['principle_b_cli_param'])
+
     
 # WORK IN PROGRESS
 def dive_1_level(_x):
@@ -182,6 +171,10 @@ def debug():
     #print ''
     for x, y in kbdata.items():
         print x, ' : ', y
+    
+    print ''
+    
+    print_filmography(kbdata['principle_a_actor'])
 
 ################################################################################
 # SINGLE-USE SCRIPTED BITS AND MAIN LOGIC FLOW
@@ -190,7 +183,7 @@ def debug():
 def main():
     
     get_sys_argv()
-    intro()
+    print_intro()
     get_principles()
     #get_principle_filmography()
     #search_start()
