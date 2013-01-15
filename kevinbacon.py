@@ -57,6 +57,7 @@ kbdata = {
         'current_actor' : None,
         'current_movie' : None,
         'omit_cast' : None,
+        'omit_year' : None,
 
         'principle_a_movie_list' : [],
         'principle_b_movie_list' : [],
@@ -90,6 +91,7 @@ def get_sys_argv():
     parser.add_argument("actor2", help="type the name of the 2nd actor or actress here, in single quotes.")
     parser.add_argument("depth", help="enter the maximum number of levels you wish to dive down.", type=int)
     parser.add_argument("-c", "--cast", help="Optional parameter to remove number of cast \(dramatically improves speed\)", action="store_true")
+    parser.add_argument("-y", "--year", help="Optional parameter to remove the year from the visibloe movie title.", action="store_true")
     argo = parser.parse_args()
     print argo.actor1, ':', argo.actor2, ':', argo.depth, ':', argo.cast
     
@@ -97,6 +99,8 @@ def get_sys_argv():
     kbdata['principle_b_cli_param'] = argo.actor2
     kbdata['max_limit'] = argo.depth
     kbdata['omit_cast'] = argo.cast
+    kbdata['omit_year'] = argo.year
+    
     
     
 def print_intro():
@@ -104,7 +108,7 @@ def print_intro():
     print 'KEVIN BACON SOLVER - Morrolan 2013'
     print ''
     print kbdata['principle_a_cli_param'] , '>>', kbdata['principle_b_cli_param']
-    print 'Searching a maximum of', str(kbdata['max_limit']), 'films deep.'
+    print 'Searching to a maximum depth of', str(kbdata['max_limit']), 'levels.'
     print ''
     
 ################################################################################
@@ -153,7 +157,11 @@ def print_filmography(actor):
         for item in _filmography:  
             tuple_a = (item['long imdb canonical title'], item.movieID, -1)
             kbdata['principle_a_movie_list'].append(tuple_a)
-            print item['long imdb canonical title']
+            
+            if kbdata['omit_year'] == True:
+                print item['long imdb canonical title'][:-7]
+            else:
+                print item['long imdb canonical title']
     else:   
         for item in _filmography:  
             # NEED TO THINK OF BREAKING THIS DOWN SO THAT YOU CAN TURN OFF CAST!
@@ -162,12 +170,17 @@ def print_filmography(actor):
             tuple_a = (item['long imdb canonical title'], item.movieID, cast_num)
             kbdata['principle_a_movie_list'].append(tuple_a) 
             
-            if len(item['long imdb canonical title']) < 30:
-                print item['long imdb canonical title'], '\t\t Cast:', cast_num
-            elif len(item['long imdb canonical title']) > 30:
-                print item['long imdb canonical title'], '\t Cast:', cast_num
-        #print (item['long imdb canonical title'], '\t IMDb MovieID:', 
-                #item.movieID, '\t Cast:', cast_num)
+            if kbdata['omit_year'] == True:
+                if len(item['long imdb canonical title']) < 30:
+                    print item['long imdb canonical title'][:-7], '\t\t Cast:', cast_num
+                elif len(item['long imdb canonical title']) > 30:
+                    print item['long imdb canonical title'][:-7], '\t Cast:', cast_num
+            else:
+                if len(item['long imdb canonical title']) < 30:
+                    print item['long imdb canonical title'], '\t\t Cast:', cast_num
+                elif len(item['long imdb canonical title']) > 30:
+                    print item['long imdb canonical title'], '\t Cast:', cast_num
+
     
 # WORK IN PROGRESS
 def dive_1_level(_x):
@@ -197,10 +210,10 @@ def debug():
     #    print ''
     
     print_filmography(kbdata['principle_a_actor'])
-    print '---------------------------------------'
+    print ''
     print ''
     print_filmography(kbdata['principle_b_actor'])
-    print '---------------------------------------'
+    print ''
     print ''
 
 ################################################################################
