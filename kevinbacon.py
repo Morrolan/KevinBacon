@@ -83,7 +83,7 @@ kbdata = {
 # SINGLE USE FUNCTIONS - EACH SHOULD ONLY RUN ONCE FOR EACH ATTEMPTED SOLUTION
 ################################################################################
 
-def get_sys_argv():
+def get_args():
     global kbdata
     
     parser = argparse.ArgumentParser()
@@ -91,7 +91,7 @@ def get_sys_argv():
     parser.add_argument("actor2", help="type the name of the 2nd actor or actress here, in single quotes.")
     parser.add_argument("depth", help="enter the maximum number of levels you wish to dive down.", type=int)
     parser.add_argument("-c", "--cast", help="Optional parameter to remove number of cast \(dramatically improves speed\)", action="store_true")
-    parser.add_argument("-y", "--year", help="Optional parameter to remove the year from the visibloe movie title.", action="store_true")
+    parser.add_argument("-y", "--year", help="Optional parameter to remove the year from the visible movie title.", action="store_true")
     argo = parser.parse_args()
     print argo.actor1, ':', argo.actor2, ':', argo.depth, ':', argo.cast
     
@@ -181,10 +181,11 @@ def print_filmography(actor):
                 elif len(item['long imdb canonical title']) > 30:
                     print item['long imdb canonical title'], '\t Cast:', cast_num
 
-    
 # WORK IN PROGRESS
 def dive_1_level(_x):
     global kbdata
+    
+    
 #Given a single actor (X):
 #
 #    Order actors movie list by number of cast, highest first.
@@ -222,7 +223,7 @@ def debug():
 
 def main():
     
-    get_sys_argv()
+    get_args()
     print_intro()
     get_principles()
     #get_principle_filmography()
