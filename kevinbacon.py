@@ -56,7 +56,7 @@ kbdata = {
         'current_level' : None,
         'current_actor' : None,
         'current_movie' : None,
-        'hide_cast' : None,
+        'omit_cast' : None,
 
         'principle_a_movie_list' : [],
         'principle_b_movie_list' : [],
@@ -86,26 +86,18 @@ def get_sys_argv():
     global kbdata
     
     parser = argparse.ArgumentParser()
-    parser.add_argument("principle_a", help="type the name of the 1st actor or actress here, in single quotes.")
-    parser.add_argument("principle_b", help="type the name of the 2nd actor or actress here, in single quotes.")
-    parser.add_argument("deep", help="enter the maximum number of levels you wish to dive down.", type=int)
+    parser.add_argument("actor1", help="type the name of the 1st actor or actress here, in single quotes.")
+    parser.add_argument("actor2", help="type the name of the 2nd actor or actress here, in single quotes.")
+    parser.add_argument("depth", help="enter the maximum number of levels you wish to dive down.", type=int)
     parser.add_argument("-c", "--cast", help="Optional parameter to remove number of cast \(dramatically improves speed\)", action="store_true")
     argo = parser.parse_args()
-    print argo.principle_a, ':', argo.principle_b, ':', argo.deep, ':', argo.cast
+    print argo.actor1, ':', argo.actor2, ':', argo.depth, ':', argo.cast
     
-    kbdata['principle_a_cli_param'] = argo.principle_a
-    kbdata['principle_b_cli_param'] = argo.principle_b
-    kbdata['max_limit'] = argo.deep
-    kbdata['hide_cast'] = argo.cast
+    kbdata['principle_a_cli_param'] = argo.actor1
+    kbdata['principle_b_cli_param'] = argo.actor2
+    kbdata['max_limit'] = argo.depth
+    kbdata['omit_cast'] = argo.cast
     
-    #if len(sys.argv) != 4:
-    #    print len(sys.argv)
-    #    print 'Incorrect number of parameters specified - precisely 3 are ' \
-    #          'required - Principle A, Principle B, and Max number of levels' \
-    #          'to search.'
-    #kbdata['principle_a_cli_param'] = sys.argv[1]
-    #kbdata['principle_b_cli_param'] = sys.argv[2]
-    #kbdata['max_limit'] = sys.argv[3]
     
 def print_intro():
     print ''
@@ -157,16 +149,23 @@ def print_filmography(actor):
         print actor, 'wasn\'t found.'
     print '---------------------------------------'
     
-    for item in _filmography:  
-        # NEED TO THINK OF BREAKING THIS DOWN SO THAT YOU CAN TURN OFF CAST!
-        ia.update(item)
-        cast_num = len(item['cast'])
-        tuple_a = (item['long imdb canonical title'], item.movieID, cast_num)
-        kbdata['principle_a_movie_list'].append(tuple_a) 
-        if len(item['long imdb canonical title']) < 30:
-            print item['long imdb canonical title'], '\t\t Cast:', cast_num
-        elif len(item['long imdb canonical title']) > 30:
-            print item['long imdb canonical title'], '\t Cast:', cast_num
+    if kbdata['omit_cast'] == True:
+        for item in _filmography:  
+            tuple_a = (item['long imdb canonical title'], item.movieID, -1)
+            kbdata['principle_a_movie_list'].append(tuple_a)
+            print item['long imdb canonical title']
+    else:   
+        for item in _filmography:  
+            # NEED TO THINK OF BREAKING THIS DOWN SO THAT YOU CAN TURN OFF CAST!
+            ia.update(item)
+            cast_num = len(item['cast'])
+            tuple_a = (item['long imdb canonical title'], item.movieID, cast_num)
+            kbdata['principle_a_movie_list'].append(tuple_a) 
+            
+            if len(item['long imdb canonical title']) < 30:
+                print item['long imdb canonical title'], '\t\t Cast:', cast_num
+            elif len(item['long imdb canonical title']) > 30:
+                print item['long imdb canonical title'], '\t Cast:', cast_num
         #print (item['long imdb canonical title'], '\t IMDb MovieID:', 
                 #item.movieID, '\t Cast:', cast_num)
     
