@@ -32,6 +32,7 @@ That would give you a score of **3**, or you have done it in 3 links. Normally t
 Based on the conservative average that an actor has starred in 25 films,
 and each film has featured 25 actors:
 
+```
 We start with 1 actor,
 who has starred in 25 films,
 which have starred 625 actors,
@@ -44,6 +45,7 @@ which have starred 152,587,890,625 actors,
 who have starred in 3,814,697,265,625 films,
 which have starred 95,367,431,640,625 actors,
 who have starred in 2,384,185,791,015,620 films.
+```
 
 This gives us 2,384,185,791,015,620 possible combinations from 1 actor to another at 6 levels.
 
