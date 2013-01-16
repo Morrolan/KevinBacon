@@ -25,3 +25,28 @@ Brad Pitt & Christian Slater - Interview with a Vampire
 Christian Slater & Kevin Costner - Robin Hood: Prince of Thieves
 ```
 That would give you a score of **3**, or you have done it in 3 links. Normally the game is limited to 6 links, but that is down to personal choice - sometimes it is easier to allow more links when you first start playing the game.
+
+
+### The Maths
+
+Based on the conservative average that an actor has starred in 25 films,
+and each film has featured 25 actors:
+  
+We start with 1 actor,
+who has starred in 25 films,
+which have starred 625 actors,
+who have starred in 15,625 films,
+which have starred 390,625 actors,
+who have starred in 9,765,625 films,
+which have starred 244,140,625 actors,
+who have starred in 6,103,515,625 films,
+which have starred 152,587,890,625 actors,
+who have starred in 3,814,697,265,625 films,
+which have starred 95,367,431,640,625 actors,
+who have starred in 2,384,185,791,015,620 films.
+  
+This gives us 2,384,185,791,015,620 possible combinations from 1 actor to another at 6 levels.
+
+As you can see, the mathematics VERY quickly spiral out of control.  Note that this is a purely statistical calculation, and does not take into account that actors may have worked with each other multiple times, nor does it take into account the actual number of films made by Hollywood - it is purely the number of possible combinations (I think.)
+
+
