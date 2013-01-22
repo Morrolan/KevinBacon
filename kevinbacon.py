@@ -132,27 +132,34 @@ def get_actor_from_string(actor_to_find):
 
 def populate_movie_list(actor, movie_list):
     try:
-        if len(movie_list['actor']) != 0:
-            actor_filmography = movie_list['actor']
+        if len(actor['actor']) != 0:
+            actor_filmography = actor['actor']
     except KeyError:
-        if len(movie_list['actress']) != 0:
-            actor_filmography = movie_list['actress']
+        if len(actor['actress']) != 0:
+            actor_filmography = actor['actress']
             
     if kbdata['omit_cast'] == True:
-        for item in actor_filmography:  
-            tuple_a = (item['long imdb canonical title'], item.movieID, -1)
+        for film in actor_filmography:  
+            tuple_a = (film['long imdb canonical title'], film.movieID, -1)
             movie_list.append(tuple_a)
     elif kbdata['omit_cast'] == False:
-        for item in tupled_filmography:  
-            ia.update(item)
-            cast_num = len(item['cast'])
-            tuple_a = (item['long imdb canonical title'], item.movieID, cast_num)
+        for film in actor_filmography:  
+            ia.update(film)
+            cast_num = len(film['cast'])
+            tuple_a = (film['long imdb canonical title'], film.movieID, cast_num)
             movie_list.append(tuple_a) 
+            
     return movie_list
+
+
+
+
+
 
 # pass in an actor OBJECT
 def print_filmography(actor, movie_list=kbdata['current_movie_list']):
     global kbdata
+
     
     if len(movie_list) == 1:
         print actor, 'has starred in', len(movie_list), 'film.'
@@ -164,23 +171,27 @@ def print_filmography(actor, movie_list=kbdata['current_movie_list']):
         print actor, 'wasn\'t found.'
     print '---------------------------------------'
         
-    if kbdata['omit_cast'] == True:
-        if kbdata['omit_year'] == True:
-            print item['long imdb canonical title'][:-7]
-        elif kbdata['omit_year'] == False:
-            print item['long imdb canonical title']
+    for film in movie_list:
+        
+        if kbdata['omit_cast'] == True:
+            if kbdata['omit_year'] == True:
+                print film[0][:-7]
+            elif kbdata['omit_year'] == False:
+                print film[0]
             
-    elif kbdata['omit_cast'] == False:   
-        if kbdata['omit_year'] == True:
-            if len(item['long imdb canonical title']) < 30:
-                print item['long imdb canonical title'][:-7], '\t\t Cast:', cast_num
-            elif len(item['long imdb canonical title']) > 30:
-                print item['long imdb canonical title'][:-7], '\t Cast:', cast_num
-        elif kbdata['omit_year'] == False:
-            if len(item['long imdb canonical title']) < 30:
-                print item['long imdb canonical title'], '\t\t Cast:', cast_num
-            elif len(item['long imdb canonical title']) > 30:
-                print item['long imdb canonical title'], '\t Cast:', cast_num
+        elif kbdata['omit_cast'] == False:   
+        
+            for film in movie_list:
+                if kbdata['omit_year'] == True:
+                    if len(film[0]) < 30:
+                        print film[0][:-7], '\t\t Cast:', cast_num
+                    elif len(film[0]) > 30:
+                        print film[0][:-7], '\t Cast:', cast_num
+                elif kbdata['omit_year'] == False:
+                    if len(film[0]) < 30:
+                        print film[0], '\t\t Cast:', cast_num
+                    elif len(film[0]) > 30:
+                        print film[0], '\t Cast:', cast_num
 
 # WORK IN PROGRESS
 def dive_1_level(_x):
@@ -210,6 +221,9 @@ def debug():
     #    print 'YEAH MAN!'
     #else:
     #    print ''
+    
+    #print kbdata['principle_a_actor']
+    #print kbdata['principle_a_movie_list']
     
     populate_movie_list(kbdata['principle_a_actor'], kbdata['principle_a_movie_list'])
     populate_movie_list(kbdata['principle_b_actor'], kbdata['principle_b_movie_list'])
